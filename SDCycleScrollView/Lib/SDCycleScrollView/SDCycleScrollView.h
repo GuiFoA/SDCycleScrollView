@@ -34,6 +34,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <SDWebImageManager.h>
 
 typedef enum {
     SDCycleScrollViewPageContolAlimentRight,
@@ -207,5 +208,7 @@ typedef enum {
 
 /** 清除图片缓存（兼容旧版本方法） */
 - (void)clearCache;
+/** 添加缓存策略 */
+@property (nonatomic, assign) SDWebImageOptions imageCacheOptions;
 
 @end

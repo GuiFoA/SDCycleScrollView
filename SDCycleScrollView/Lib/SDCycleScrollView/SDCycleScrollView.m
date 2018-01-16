@@ -65,11 +65,15 @@ NSString * const ID = @"SDCycleScrollViewCell";
     return self;
 }
 
-- (void)awakeFromNib
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    [super awakeFromNib];
-    [self initialization];
-    [self setupMainView];
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self initialization];
+        [self setupMainView];
+    }
+    return self;
 }
 
 - (void)initialization
@@ -352,7 +356,12 @@ NSString * const ID = @"SDCycleScrollViewCell";
         self.imageURLStringsGroup = [temp copy];
     }
 }
-
+- (SDWebImageOptions)imageCacheOptions{
+    if (_imageCacheOptions == 0) {
+        _imageCacheOptions = SDWebImageRefreshCached;
+    }
+    return _imageCacheOptions;
+}
 - (void)disableScrollGesture {
     self.mainView.canCancelContentTouches = NO;
     for (UIGestureRecognizer *gesture in self.mainView.gestureRecognizers) {
@@ -586,7 +595,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     
     if (!self.onlyDisplayText && [imagePath isKindOfClass:[NSString class]]) {
         if ([imagePath hasPrefix:@"http"]) {
-            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:self.placeholderImage];
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:self.placeholderImage options:self.imageCacheOptions];
         } else {
             UIImage *image = [UIImage imageNamed:imagePath];
             if (!image) {
